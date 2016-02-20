@@ -1,0 +1,15 @@
+{
+  "name": "justiciar",
+  "version": "0.1.0",
+  "description": "An experimental test framework",
+  "main": "justiciar.js",
+  "scripts": {},
+  "keywords": [
+    "testing"
+  ],
+  "author": "David Edwards",
+  "license": "MIT",
+  "dependencies": {
+    "lodash": "^4.3.0"
+  }
+}
