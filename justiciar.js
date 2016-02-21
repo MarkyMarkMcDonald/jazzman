@@ -63,8 +63,8 @@ function aggregateStatus(results) {
 }
 
 function it(name, test) {
-  function executeIt(context, focusLine) {
-    var result = test(context());
+  function executeIt(buildContext, focusLine) {
+    var result = test(buildContext());
     return {
       name: name,
       status: result,
