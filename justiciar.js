@@ -1,7 +1,7 @@
 var _ = require('lodash/fp');
 var stack = require('stack-trace');
 
-var Report = require('./report');
+var report = require('./report');
 var defineTest = require('./define-test');
 
 function describe(name, config) {
@@ -22,7 +22,7 @@ function describe(name, config) {
       return test(context, focusLine);
     }, tests);
 
-    return Report(name, results);
+    return report(name, results);
   }
 
   return defineTest(name, executeDescribe, buildContext, definedAt.getLineNumber());
@@ -34,7 +34,7 @@ function staggerredZip(array, finalElement) {
 
 function it(name, test) {
   function executeIt(buildContext, focusLine) {
-    return Report(name, test(buildContext()));
+    return report(name, test(buildContext()));
   }
 
   return defineTest(name, executeIt, _.identity, stack.get()[1].getLineNumber());

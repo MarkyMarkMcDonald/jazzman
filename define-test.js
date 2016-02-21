@@ -1,4 +1,4 @@
-var Report = require('./report');
+var report = require('./report');
 
 function markStartLine(startLine, fn) {
   fn.startLine = startLine;
@@ -19,7 +19,7 @@ module.exports = function defineTest(name, execute, buildContext, startLine) {
   return markStartLine(startLine, function(endLine) {
     return function(buildSuperContext, focusLine) {
       return testSuppressedByLineFocus(startLine, endLine, focusLine) ?
-        Report.omitted(name) :
+        report.omitted(name) :
         execute(buildFullContext(buildContext, buildSuperContext), focusLine) ;
     };
   });
