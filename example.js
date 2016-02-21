@@ -37,6 +37,21 @@ module.exports = J.describe('Basic math', {
         J.expect(context.x + context.y).toEqual(3),
         J.expect(context.x + context.y).toEqual(3)
       ];
-    })
+    }),
+
+    J.it('can handle expectations throughout a sequence of events', J.sequence([
+      function(context) {
+        context.x += 1;
+        return J.expect(context.x + context.y).toEqual(4);
+      },
+      function(context) {
+        context.y += 1;
+        return J.expect(context.x + context.y).toEqual(5);
+      },
+      function(context) {
+        context.x = 1;
+        return J.expect(context.x + context.y).toEqual(4);
+      }
+    ]))
   ]
 });

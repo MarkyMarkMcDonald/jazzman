@@ -81,8 +81,15 @@ function expect(subject) {
   }
 }
 
+function sequence(tests) {
+  return function(context) {
+    return _.flatMap(function(test) { return test(context); }, tests);
+  };
+}
+
 module.exports = {
   describe: describe,
   it: it,
-  expect: expect
+  expect: expect,
+  sequence: sequence
 }
