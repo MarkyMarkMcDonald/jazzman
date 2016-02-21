@@ -1,18 +1,14 @@
 var _ = require('lodash/fp');
 var stack = require('stack-trace');
 
+var Report = require('./report');
+
 function runTest(name, execute, buildContext, startLine) {
   var filterableTest = function(endLine) {
     return function(buildSuperContext, focusLine) {
-      if(testSuppressedByLineFocus(startLine, endLine, focusLine)) {
-        return {
-          name: name,
-          status: 'OMITTED',
-          results: []
-        };
-      } else {
-        return execute(function() { return buildContext(buildSuperContext()); }, focusLine);
-      }
+      return testSuppressedByLineFocus(startLine, endLine, focusLine) ?
+        Report.omitted(name) :
+        execute(function() { return buildContext(buildSuperContext()); }, focusLine) ;
     };
   };
 
@@ -38,11 +34,7 @@ function describe(name, config) {
       return test(context, focusLine);
     }, tests);
 
-    return {
-      name: name,
-      status: aggregateStatus(_.map('status', results)),
-      results: results
-    };
+    return Report(name, results);
   }
 
   return runTest(name, executeDescribe, buildContext, definedAt.getLineNumber());
@@ -56,20 +48,9 @@ function testSuppressedByLineFocus(startLine, endLine, focusLine) {
   return focusLine && (startLine > focusLine || (endLine !== 'END' && endLine <= focusLine));
 }
 
-function aggregateStatus(results) {
-  if(_.some(function(result) { return result === 'FAIL'; }, results)) return 'FAIL';
-  if(_.every(function(result) { return result === 'OMITTED'; }, results)) return 'OMITTED';
-  return 'PASS';
-}
-
 function it(name, test) {
   function executeIt(buildContext, focusLine) {
-    var results = _.flatten([test(buildContext())]);
-    return {
-      name: name,
-      status: aggregateStatus(results),
-      results: results
-    };
+    return Report(name, test(buildContext()));
   }
 
   return runTest(name, executeIt, _.identity, stack.get()[1].getLineNumber());
@@ -77,7 +58,11 @@ function it(name, test) {
 
 function expect(subject) {
   return {
-    toEqual: function(expected) { return subject === expected ? 'PASS' : 'FAIL'; }
+    toEqual: function(expected) {
+      return subject === expected ?
+        {status: 'PASS'}:
+        {status: 'FAIL'};
+    }
   }
 }
 

@@ -18,12 +18,12 @@ function printReport(report, indent) {
     console.log(padding + formattedForStatus(report.status, report.name + ' (' + report.status + ')'));
 
     _.each(function(result) {
-      if(typeof(result) === 'string') {
-        if(result === 'FAIL') {
-          console.log(padding + '  ' + formattedForStatus(result, result));
-        }
-      } else {
+      if(result.results) {
         printReport(result, indent+2);
+      } else {
+        if(result.status === 'FAIL') {
+          console.log(padding + '  ' + formattedForStatus(result.status, result.status));
+        }
       }
     }, report.results);
   }
