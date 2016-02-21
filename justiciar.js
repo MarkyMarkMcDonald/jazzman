@@ -2,27 +2,7 @@ var _ = require('lodash/fp');
 var stack = require('stack-trace');
 
 var Report = require('./report');
-
-function markStartLine(startLine, fn) {
-  fn.startLine = startLine;
-  return fn;
-}
-
-function buildFullContext(buildContext, buildSuperContext) {
-  return function() {
-    return buildContext(buildSuperContext());
-  }
-}
-
-function runTest(name, execute, buildContext, startLine) {
-  return markStartLine(startLine, function(endLine) {
-    return function(buildSuperContext, focusLine) {
-      return testSuppressedByLineFocus(startLine, endLine, focusLine) ?
-        Report.omitted(name) :
-        execute(buildFullContext(buildContext, buildSuperContext), focusLine) ;
-    };
-  });
-}
+var defineTest = require('./define-test');
 
 function describe(name, config) {
   var definedAt = stack.get()[1];
@@ -45,15 +25,11 @@ function describe(name, config) {
     return Report(name, results);
   }
 
-  return runTest(name, executeDescribe, buildContext, definedAt.getLineNumber());
+  return defineTest(name, executeDescribe, buildContext, definedAt.getLineNumber());
 }
 
 function staggerredZip(array, finalElement) {
   return _.zip(array, _.concat(_.tail(array), [finalElement]));
-}
-
-function testSuppressedByLineFocus(startLine, endLine, focusLine) {
-  return focusLine && (startLine > focusLine || (endLine !== 'END' && endLine <= focusLine));
 }
 
 function it(name, test) {
@@ -61,7 +37,7 @@ function it(name, test) {
     return Report(name, test(buildContext()));
   }
 
-  return runTest(name, executeIt, _.identity, stack.get()[1].getLineNumber());
+  return defineTest(name, executeIt, _.identity, stack.get()[1].getLineNumber());
 }
 
 function expect(subject) {
