@@ -1,4 +1,5 @@
 var _ = require('lodash/fp');
+var colors = require('colors/safe');
 
 var fileAndLineToRun = _.split(':', process.argv[2]);
 var fileToRun = fileAndLineToRun[0];
@@ -14,16 +15,26 @@ function printReport(report, indent) {
   var padding = Array(indent+1).join(' ');
 
   if(report.status !== 'OMITTED') {
-    console.log(padding + report.name);
+    console.log(padding + formattedForStatus(report.status, report.name + ' (' + report.status + ')'));
 
     _.each(function(result) {
       if(typeof(result) === 'string') {
-        console.log(padding + '  ' + result);
+        if(result === 'FAIL') {
+          console.log(padding + '  ' + formattedForStatus(result, result));
+        }
       } else {
         printReport(result, indent+2);
       }
     }, report.results);
   }
+}
+
+function formattedForStatus(status, text) {
+  var formatter = colors.yellow;
+  if(status === 'PASS') formatter = colors.green;
+  if(status === 'FAIL') formatter = colors.red;
+
+  return formatter(text);
 }
 
 printReport(report);

@@ -10,6 +10,7 @@
   "author": "David Edwards",
   "license": "MIT",
   "dependencies": {
+    "colors": "^1.1.2",
     "lodash": "^4.3.0",
     "stack-trace": "0.0.9"
   }
