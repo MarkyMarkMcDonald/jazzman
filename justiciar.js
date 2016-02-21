@@ -40,7 +40,7 @@ function describe(name, config) {
 
     return {
       name: name,
-      status: aggregateStatus(results),
+      status: aggregateStatus(_.map('status', results)),
       results: results
     };
   }
@@ -64,11 +64,11 @@ function aggregateStatus(results) {
 
 function it(name, test) {
   function executeIt(buildContext, focusLine) {
-    var result = test(buildContext());
+    var results = _.flatten([test(buildContext())]);
     return {
       name: name,
-      status: result,
-      results: _.flatten([result])
+      status: aggregateStatus(results),
+      results: results
     };
   }
 
