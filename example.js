@@ -29,6 +29,14 @@ module.exports = J.describe('Basic math', {
         })
 
       ]
+    }),
+
+    J.it('can handle multiple expectations', function(context) {
+      return [
+        J.expect(context.x + context.y).toEqual(3),
+        J.expect(context.x + context.y).toEqual(3),
+        J.expect(context.x + context.y).toEqual(3)
+      ];
     })
   ]
 });

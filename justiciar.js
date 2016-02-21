@@ -68,7 +68,7 @@ function it(name, test) {
     return {
       name: name,
       status: result,
-      results: [result]
+      results: _.flatten([result])
     };
   }
 
