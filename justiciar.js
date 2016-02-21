@@ -3,17 +3,25 @@ var stack = require('stack-trace');
 
 var Report = require('./report');
 
+function markStartLine(startLine, fn) {
+  fn.startLine = startLine;
+  return fn;
+}
+
+function buildFullContext(buildContext, buildSuperContext) {
+  return function() {
+    return buildContext(buildSuperContext());
+  }
+}
+
 function runTest(name, execute, buildContext, startLine) {
-  var filterableTest = function(endLine) {
+  return markStartLine(startLine, function(endLine) {
     return function(buildSuperContext, focusLine) {
       return testSuppressedByLineFocus(startLine, endLine, focusLine) ?
         Report.omitted(name) :
-        execute(function() { return buildContext(buildSuperContext()); }, focusLine) ;
+        execute(buildFullContext(buildContext, buildSuperContext), focusLine) ;
     };
-  };
-
-  filterableTest.startLine = startLine;
-  return filterableTest;
+  });
 }
 
 function describe(name, config) {
