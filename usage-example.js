@@ -26,6 +26,19 @@ module.exports = J.describe('Basic math', {
 
         J.it('causes problems', function(context) {
           return J.expect(context.x + context.y).toEqual(3);
+        }),
+
+        J.describe('and some corrected assumptions', {
+          context: function(context) {
+            context.x = 1;
+            return context;
+          },
+
+          tests: [
+            J.it('is fine', function(context) {
+              return J.expect(context.x + context.y).toEqual(3);
+            })
+          ]
         })
 
       ]
