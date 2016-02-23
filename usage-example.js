@@ -55,11 +55,12 @@ module.exports = J.describe('Basic math', {
     J.it('can handle expectations throughout a sequence of events', J.sequence([
       function(context) {
         context.x += 1;
+        context.z = 'zzzz';
         return J.expect(context.x + context.y).toEqual(4);
       },
       function(context) {
         context.y += 1;
-        return J.expect(context.x + context.y).toEqual(5);
+        return J.expect(context.z).toEqual('zzzz');
       },
       function(context) {
         context.x = 1;
