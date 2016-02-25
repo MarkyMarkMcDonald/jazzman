@@ -1,4 +1,4 @@
-var J = require('./justiciar');
+var J = require('../justiciar');
 
 module.exports = J.describe('Basic math', {
 
