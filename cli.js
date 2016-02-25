@@ -12,13 +12,12 @@ var prefix = require('lodash/fp/add');
 var run = require('./run');
 var printReport = require('./print-report');
 
-function expandDirectory(arg) {
-  return compose(
-    flatMap(expandPath),
-    map(prefix(arg)),
-    fs.readdirSync
-  )(arg);
-}
+function prefixedContents(arg) { return compose(map(prefix(arg)), fs.readdirSync)(arg); }
+
+var expandDirectory = compose(
+  flatMap(expandPath),
+  prefixedContents
+)
 
 function getFsStat(arg) {
   try {
@@ -31,19 +30,15 @@ function getFsStat(arg) {
 
 function expandPath(arg) {
   var fileAndLine = split(':', arg);
-
   var stat = getFsStat(fileAndLine[0]);
-  if(!stat) return [];
 
-  return stat.isDirectory() ?
-    expandDirectory(fileAndLine[0]) :
-    [fileAndLine];
+  if(stat === undefined) return [];
+  if(stat.isDirectory()) return expandDirectory(fileAndLine[0]);
+  return [fileAndLine];
 }
 
 function withDestructuredPair(fn) {
-  return function(pair) {
-    return fn(pair[0], pair[1]);
-  };
+  return function(pair) { return fn(pair[0], pair[1]); };
 }
 
 function runSuite(file, line) {
