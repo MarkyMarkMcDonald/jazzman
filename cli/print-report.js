@@ -9,6 +9,18 @@ function formattedForStatus(status, text) {
   return formatter(text);
 }
 
+function resultMessageWithLocation(result) {
+  return formattedForStatus(result.status,
+    result.message + ' @ ' + result.location.getFileName() + ':' + result.location.getLineNumber()
+  );
+}
+
+function printDetail(result, padding) {
+  if(result.status === 'FAIL') {
+    console.log(padding + '  ' + resultMessageWithLocation(result));
+  }
+}
+
 module.exports = function printReport(report, indent) {
   indent = indent || 0;
   var padding = Array(indent+1).join(' ');
@@ -17,13 +29,9 @@ module.exports = function printReport(report, indent) {
     console.log(padding + formattedForStatus(report.status, report.name + ' (' + report.status + ')'));
 
     each(function(result) {
-      if(result.results) {
-        printReport(result, indent+2);
-      } else {
-        if(result.status === 'FAIL') {
-          console.log(padding + '  ' + formattedForStatus(result.status, result.status));
-        }
-      }
+      result.results ?
+        printReport(result, indent+2):
+        printDetail(result, padding);
     }, report.results);
   }
 }
