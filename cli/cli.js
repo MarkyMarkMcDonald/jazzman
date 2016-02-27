@@ -10,7 +10,7 @@ var each = require('lodash/fp/each');
 var compose = require('lodash/fp/compose');
 var spread = require('lodash/fp/spread');
 
-var run = require('./run');
+var run = require('../run');
 var printReport = require('./print-report');
 
 function prefixedContents(arg) { return compose(map(joinDir(arg)), fs.readdirSync)(arg); }
