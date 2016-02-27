@@ -1,4 +1,4 @@
-var colors = require('colors/safe');
+var colors = require('chalk');
 var each = require('lodash/fp/each');
 
 function formattedForStatus(status, text) {
