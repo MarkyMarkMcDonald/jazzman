@@ -4,14 +4,7 @@ var stack = require('stack-trace');
 var report = require('./report');
 var defineTest = require('./define-test');
 var describe = require('./describe');
-
-function it(name, test) {
-  function executeIt(buildContext, focusLine) {
-    return report(name, test(buildContext()));
-  }
-
-  return defineTest(name, executeIt, _.identity, stack.get()[1].getLineNumber());
-}
+var it = require('./it');
 
 function expect(subject) {
   return {
