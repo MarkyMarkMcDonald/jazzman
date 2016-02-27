@@ -1,4 +1,4 @@
-var report = require('./report');
+var report = require('../report');
 
 function markStartLine(startLine, fn) {
   fn.startLine = startLine;

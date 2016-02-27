@@ -1,7 +1,7 @@
 var _ = require('lodash/fp');
 var stack = require('stack-trace');
 
-var report = require('./report');
+var report = require('../report');
 var defineTest = require('./define-test');
 
 function staggerredZip(array, finalElement) {
