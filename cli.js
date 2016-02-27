@@ -8,6 +8,7 @@ var flatMap = require('lodash/fp/flatMap');
 var each = require('lodash/fp/each');
 var compose = require('lodash/fp/compose');
 var prefix = require('lodash/fp/add');
+var spread = require('lodash/fp/spread');
 
 var run = require('./run');
 var printReport = require('./print-report');
@@ -37,10 +38,6 @@ function expandPath(arg) {
   return [fileAndLine];
 }
 
-function withDestructuredPair(fn) {
-  return function(pair) { return fn(pair[0], pair[1]); };
-}
-
 function runSuite(file, line) {
   return run(require('./' + file), line);
 }
@@ -48,7 +45,7 @@ function runSuite(file, line) {
 cli.main(
   compose(
     each(printReport),
-    map(withDestructuredPair(runSuite)),
+    map(spread(runSuite)),
     flatMap(expandPath)
   )
 );
