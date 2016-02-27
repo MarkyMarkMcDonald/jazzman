@@ -6,16 +6,7 @@ var defineTest = require('./define-test');
 var describe = require('./describe');
 var it = require('./it');
 var sequence = require('./sequence');
-
-function expect(subject) {
-  return {
-    toEqual: function(expected) {
-      return subject === expected ?
-        {status: 'PASS'}:
-        {status: 'FAIL'};
-    }
-  }
-}
+var expect = require('./expectations/expect');
 
 module.exports = {
   describe: describe,
