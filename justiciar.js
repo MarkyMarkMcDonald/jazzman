@@ -5,6 +5,7 @@ var report = require('./report');
 var defineTest = require('./define-test');
 var describe = require('./describe');
 var it = require('./it');
+var sequence = require('./sequence');
 
 function expect(subject) {
   return {
@@ -14,12 +15,6 @@ function expect(subject) {
         {status: 'FAIL'};
     }
   }
-}
-
-function sequence(tests) {
-  return function(context) {
-    return _.flatMap(function(test) { return test(context); }, tests);
-  };
 }
 
 module.exports = {
