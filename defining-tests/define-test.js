@@ -1,21 +1,17 @@
+var compose = require('lodash/fp/compose');
 var report = require('../report');
 
-function buildFullContext(buildContext, buildSuperContext) {
-  return function() {
-    return buildContext(buildSuperContext());
-  }
-}
-
-function testSuppressedByLineFocus(startLine, endLine, focusLine) {
-  return focusLine && (startLine > focusLine || (endLine !== 'END' && endLine <= focusLine));
-}
-
 module.exports = function defineTest(name, execute, buildContext) {
-  return function(startLine, endLine) {
-    return function(buildSuperContext, focusLine) {
-      return testSuppressedByLineFocus(startLine, endLine, focusLine) ?
-        report.omitted(name) :
-        execute(buildFullContext(buildContext, buildSuperContext), focusLine) ;
+  return function situateTestBetweenLines(startLine, endLine) {
+    return function run(buildSuperContext, focusLine) {
+      var buildFullContext = compose(buildContext, buildSuperContext);
+      var suppressTest = focusLineOutOfBounds(startLine, endLine, focusLine);
+
+      return suppressTest ? report.omitted(name) : execute(buildFullContext, focusLine);
     };
   };
 };
+
+function focusLineOutOfBounds(startLine, endLine, focusLine) {
+  return focusLine && (startLine > focusLine || (endLine !== 'END' && endLine <= focusLine));
+}
