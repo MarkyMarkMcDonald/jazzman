@@ -10,7 +10,7 @@ function testSuppressedByLineFocus(startLine, endLine, focusLine) {
   return focusLine && (startLine > focusLine || (endLine !== 'END' && endLine <= focusLine));
 }
 
-module.exports = function defineTest(name, execute, buildContext, startLine) {
+module.exports = function defineTest(name, execute, buildContext) {
   return function(startLine, endLine) {
     return function(buildSuperContext, focusLine) {
       return testSuppressedByLineFocus(startLine, endLine, focusLine) ?

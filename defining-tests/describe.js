@@ -4,21 +4,12 @@ var stack = require('stack-trace');
 var report = require('../report');
 var defineTest = require('./define-test');
 
-function staggerredZip(array, finalElement) {
-  return _.zip(array, _.concat(_.tail(array), [finalElement]));
-}
-
 module.exports = function describe(name, config) {
   var definedAt = stack.get()[1];
   var buildContext = config.context || _.identity;
   var testDefinitions = config.tests || [];
 
-  var tests = _.map(function(testPair) {
-    return testPair[0].definition(
-      testPair[0].startLine,
-      testPair[1].startLine
-    );
-  }, staggerredZip(testDefinitions, 'END'));
+  var tests = scopeAllTestsByLineNumber(testDefinitions);
 
   function executeDescribe(context, focusLine) {
     if(focusLine >= definedAt.getLineNumber() && focusLine < testDefinitions[0].startLine) {
@@ -36,4 +27,23 @@ module.exports = function describe(name, config) {
     startLine: definedAt.getLineNumber(),
     definition: defineTest(name, executeDescribe, buildContext)
   };
+};
+
+function scopeAllTestsByLineNumber(testDefinitions) {
+  return _.map(
+    _.spread(scopeTestByLineNumber),
+    staggerredZip(testDefinitions, 'END')
+  );
+}
+
+function scopeTestByLineNumber(test, followingTest) {
+  var definition = test.definition;
+  var startLine = test.startLine;
+  var endLine = followingTest === 'END' ? 'END' : followingTest.startLine;
+
+  return definition(startLine, endLine);
+}
+
+function staggerredZip(array, finalElement) {
+  return _.zip(array, _.concat(_.tail(array), [finalElement]));
 }
