@@ -14,7 +14,10 @@ module.exports = function describe(name, config) {
   var testDefinitions = config.tests || [];
 
   var tests = _.map(function(testPair) {
-    return testPair[0](testPair[1].startLine);
+    return testPair[0].definition(
+      testPair[0].startLine,
+      testPair[1].startLine
+    );
   }, staggerredZip(testDefinitions, 'END'));
 
   function executeDescribe(context, focusLine) {
@@ -29,5 +32,8 @@ module.exports = function describe(name, config) {
     return report(name, results);
   }
 
-  return defineTest(name, executeDescribe, buildContext, definedAt.getLineNumber());
+  return {
+    startLine: definedAt.getLineNumber(),
+    definition: defineTest(name, executeDescribe, buildContext)
+  };
 }

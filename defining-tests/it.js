@@ -9,5 +9,8 @@ module.exports = function it(name, test) {
     return report(name, test(buildContext()));
   }
 
-  return defineTest(name, executeIt, identity, stack.get()[1].getLineNumber());
+  return {
+    startLine: stack.get()[1].getLineNumber(),
+    definition: defineTest(name, executeIt, identity)
+  };
 }
