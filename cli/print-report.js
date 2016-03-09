@@ -21,6 +21,10 @@ function printDetail(result, padding) {
   }
 }
 
+function hasNestedResults(result) {
+  return !!result.results;
+}
+
 module.exports = function printReport(report, indent) {
   indent = indent || 0;
   var padding = Array(indent+1).join(' ');
@@ -29,7 +33,7 @@ module.exports = function printReport(report, indent) {
     console.log(padding + formattedForStatus(report.status, report.name + ' (' + report.status + ')'));
 
     each(function(result) {
-      result.results ?
+      hasNestedResults(result) ?
         printReport(result, indent+2):
         printDetail(result, padding);
     }, report.results);
