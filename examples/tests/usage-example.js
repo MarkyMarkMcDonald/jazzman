@@ -10,6 +10,17 @@ module.exports = J.describe('Basic addition', {
 
   tests: [
 
+    J.it('confirms that 2+2=4', function(context) {
+      return J.expect(context.objectUnderTest.add(2,2)).toEqual(4);
+    }),
+
+    J.it('is commutative', function(context) {
+      return [
+        J.expect(context.objectUnderTest.add(3,4)).toEqual(7),
+        J.expect(context.objectUnderTest.add(4,3)).toEqual(7)
+      ];
+    }),
+
     J.describe('when the first number is 1', {
 
       context: function(context) {
@@ -27,7 +38,7 @@ module.exports = J.describe('Basic addition', {
 
           tests: [
             J.it('returns 3', function(context) {
-              var sum = context.objectUnderTest.addCorrectly(context.x, context.y);
+              var sum = context.objectUnderTest.add(context.x, context.y);
               return J.expect(sum).toEqual(3);
             })
           ]
@@ -41,7 +52,7 @@ module.exports = J.describe('Basic addition', {
 
           tests: [
             J.it('returns 4', function(context) {
-              var sum = context.objectUnderTest.addCorrectly(context.x, context.y);
+              var sum = context.objectUnderTest.add(context.x, context.y);
               return J.expect(sum).toEqual(4);
             }),
 
@@ -56,24 +67,17 @@ module.exports = J.describe('Basic addition', {
       ]
     }),
 
-    J.it('is commutative', function(context) {
-      return [
-        J.expect(context.objectUnderTest.addCorrectly(3,4)).toEqual(7),
-        J.expect(context.objectUnderTest.addCorrectly(4,3)).toEqual(7)
-      ];
-    }),
-
-    J.it('can handle expectations throughout a sequence of events', J.sequence([
+    J.it('can do even more math using previous math', J.sequence([
       function(context) {
-        context.resultSoFar = context.objectUnderTest.addCorrectly(1,5);
+        context.resultSoFar = context.objectUnderTest.add(1,5);
         return J.expect(context.resultSoFar).toEqual(6);
       },
       function(context) {
-        context.resultSoFar = context.objectUnderTest.addCorrectly(context.resultSoFar,2);
+        context.resultSoFar = context.objectUnderTest.add(context.resultSoFar,2);
         return J.expect(context.resultSoFar).toEqual(8);
       },
       function(context) {
-        context.resultSoFar = context.objectUnderTest.addCorrectly(context.resultSoFar,2);
+        context.resultSoFar = context.objectUnderTest.add(context.resultSoFar,2);
         return J.expect(context.resultSoFar).toEqual(10);
       }
     ]))
