@@ -1,4 +1,4 @@
-var J = require('../../justiciar');
+var J = require('../../jazzman');
 
 module.exports = J.describe('Basic addition', {
 

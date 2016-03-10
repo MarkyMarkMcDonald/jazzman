@@ -1,8 +1,8 @@
 {
-  "name": "justiciar",
+  "name": "jazzman",
   "version": "0.1.0",
   "description": "An experimental test framework",
-  "main": "justiciar.js",
+  "main": "jazzman.js",
   "scripts": {},
   "keywords": [
     "testing"
