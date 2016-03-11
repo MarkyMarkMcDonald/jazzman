@@ -1,6 +1,6 @@
 module.exports = {
-  describe: require('./defining-tests/describe'),
-  it: require('./defining-tests/it'),
-  expect: require('./expectations/expect'),
-  sequence: require('./defining-tests/sequence')
+  describe: require('./lib/defining-tests/describe'),
+  it: require('./lib/defining-tests/it'),
+  expect: require('./lib/expectations/expect'),
+  sequence: require('./lib/defining-tests/sequence')
 }

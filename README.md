@@ -45,7 +45,7 @@ For a working usage example, check out the `examples/tests/` directory. You can
 run the example tests with:
 
 ````bash
-$ node cli/cli.js examples/tests/
+$ node lib/cli/cli.js examples/tests/
 ````
 
 `jazzman.js` exports an object containing the various test utilities, including
@@ -193,12 +193,12 @@ run. For example, if you have jazzman cloned into a subdirectory of your
 project:
 
 ````bash
-$ node ./jazzman/cli/cli.js ./path/to/my/tests/*spec.js
+$ node ./jazzman/lib/cli/cli.js ./path/to/my/tests/*spec.js
 ````
 
 You can also focus on a particular describe or line block by supplying a line
 number after a colon:
 
 ````bash
-$ node ./jazzman/cli/cli.js ./path/to/my/tests/focus_spec.js:111
+$ node ./jazzman/lib/cli/cli.js ./path/to/my/tests/focus_spec.js:111
 ````
