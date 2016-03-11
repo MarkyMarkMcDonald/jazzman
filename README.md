@@ -1,8 +1,8 @@
 # jazzman
 
 <i>Lift me, won't you lift me above the old routine?<br/>
-Make it nice, play it clean, Jazzman</i>
-- Carole King
+Make it nice, play it clean, Jazzman</i><br/>
+-- Carole King
 
 ## What is Jazzman?
 
@@ -19,7 +19,7 @@ If you need a test harness for real work, you should probably use a well-vetted
 solution like Jasmine.
 
 On the other hand, if you're interested in experimenting with writing specs a
-little differently, playing with Jazzman could be an interesting exercise.
+little differently, playing with Jazzman could be a fun exercise.
 
 Jazzman focuses on the idea of a test as a function that takes a context and
 returns a result. The DSL is designed to be lightly opinionated and encourage a
@@ -158,7 +158,7 @@ module.exports = J.describe('Jazzman', {
       },
 
       tests: [
-        J.it('he can sing you into paradise', function(context) {
+        J.it('can sing you into paradise', function(context) {
           return [
             J.expect(context.jazzmanCan).toEqual('play it clean and sing you into paradise'),
           ];
@@ -173,7 +173,7 @@ module.exports = J.describe('Jazzman', {
       },
 
       tests: [
-        J.it('he can sing you into paradise', function(context) {
+        J.it('can sing you into paradise', function(context) {
           return [
             J.expect(context.jazzmanCan).toEqual('play it clean and cry like a fallen angel'),
           ];
