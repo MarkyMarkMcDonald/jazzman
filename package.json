@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "description": "An experimental test framework",
   "main": "jazzman.js",
-  "scripts": {},
+  "scripts": {
+    "test": "node tests/run-tests.js"
+  },
   "keywords": [
     "testing",
     "javascript"
