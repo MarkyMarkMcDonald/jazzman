@@ -58,11 +58,11 @@ var J = require('./jazzman');
 module.exports = J.describe('a test suite!', {
   tests: [
 
-    it('makes it nice', function() {
+    J.it('makes it nice', function() {
       return J.expect(true).toEqual(true);
     }),
 
-    it('plays it clean', function() {
+    J.it('plays it clean', function() {
       return J.expect(false).toEqual(false);
     })
 
