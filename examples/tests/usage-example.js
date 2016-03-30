@@ -80,6 +80,19 @@ module.exports = J.describe('Basic addition', {
         context.resultSoFar = context.objectUnderTest.add(context.resultSoFar,2);
         return J.expect(context.resultSoFar).toEqual(10);
       }
-    ]))
+    ])),
+
+    J.it('can do math without blocking', function(context) {
+      var promiseOfFiveAndFive = context.objectUnderTest.addAsync(5,5);
+      var promiseOfTwoAndEight = context.objectUnderTest.addAsyncSlowly(2,8);
+
+      // TODO: toEqual -> toBe
+      return [
+        J.expect(context.objectUnderTest.add(9,1)).toEqual(10),
+        J.expect(promiseOfFiveAndFive).toEqual(10),
+        J.expect(promiseOfTwoAndEight).toEqual(10).within(15000)
+      ];
+    })
+
   ]
 });
